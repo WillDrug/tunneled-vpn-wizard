@@ -175,3 +175,13 @@ making not only your browsing habits unknown to your ISP, but also impossible to
 Enjoy.
 
 You can raise an issue if something goes wrong - truth be told, this script is a bit horrible.
+
+## Optional: Mobile
+If you have downloaded the things for your android device, you need to get all those files to it and know where they are.
+
+Then, importing a configuration into `openvpn` looks basically the same. 
+**Note** that all the extra files like `ca` and `ta` are bundled inside the `.ovpn` file for mobile!
+
+This is how `SSLSocks` look like after every file have been added, though:
+
+![stunnel_droid](readme_images/android.png)
