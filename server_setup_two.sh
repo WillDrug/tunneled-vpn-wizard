@@ -1,6 +1,6 @@
-﻿
+
 function uoa {
-	grep -q "^$1 " $2 && sed -i "s/^$1 .*/$3/" $2 || printf "\n$3" >> $2
+	grep -q "^$1.*$" $2 && sed -i "s/^$1.*$/$3/" $2 || printf "\n$3" >> $2
 }
 
 # installing vpn
@@ -14,12 +14,13 @@ passwd $1
 #passwd $1
 # checking that wheel is in sudoers or adding
 echo "> Checking wheel privileges"
-grep -q "%wheel\sALL=(ALL)\sALL" /etc/sudoers || echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+uoa "%wheel\sALL=(ALL)\sNOPASSWD" /etc/sudoers "%%wheel ALL=(ALL) NOPASSWD: ALL"
+# grep -q "%wheel\sALL=(ALL)\sNOPASSWD:\sALL" /etc/sudoers || echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # no password auth, no root login, NO ACCESS FUCK YOU
 echo "> Configuring ssh"
 cp -f /etc/ssh/sshd_config /etc/ssh/sshd_config.old
-uoa Port /etc/ssh/sshd_config "Port 31337"
+uoa Port /etc/ssh/sshd_config "Port $4"
 uoa PasswordAuthentication /etc/ssh/sshd_config "PasswordAuthentication no"
 uoa PermitRootLogin /etc/ssh/sshd_config "PermitRootLogin no"
 uoa PubkeyAuthentication /etc/ssh/sshd_config "PubkeyAuthentication yes"

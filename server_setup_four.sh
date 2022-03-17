@@ -30,7 +30,7 @@ iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT;
 iptables -A INPUT -i lo -j ACCEPT;
 iptables -A INPUT -p icmp --icmp-type 8 -j ACCEPT;
 iptables -A INPUT -p tcp --dport 443 -j ACCEPT;
-iptables -A INPUT -p tcp --dport 31337 -j ACCEPT;
+iptables -A INPUT -p tcp --dport $4 -j ACCEPT;
 iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT;
 iptables -A FORWARD -i tun+ -s 10.8.8.0/24 -j ACCEPT;
 iptables -t nat -A POSTROUTING -s 10.8.8.0/24 -o eth0 -j SNAT --to-source  $(echo $(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1) | cut -d ' ' -f 1);

@@ -1,4 +1,6 @@
-﻿
+yum clean all;
+yum check;
+yum check-update;
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm;
 yum update -y;
 # presuming selinux config present

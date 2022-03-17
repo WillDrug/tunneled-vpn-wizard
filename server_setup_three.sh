@@ -81,10 +81,11 @@ else
 	exit
 fi
 systemctl enable openvpn-server@openvpn-server
-echo "> Installign stunnel"
-cd /opt && curl -O -L https://rpmfind.net/linux/fedora/linux/updates/25/x86_64/Packages/s/stunnel-5.41-1.fc25.x86_64.rpm
-rpm -ivh stunnel-5.41-1.fc25.x86_64.rpm
-rpm -qi stunnel
+echo "> Installing stunnel"
+# cd /opt && curl -O -L https://rpmfind.net/linux/fedora/linux/updates/25/x86_64/Packages/s/stunnel-5.41-1.fc25.x86_64.rpm
+# rpm -ivh stunnel-5.41-1.fc25.x86_64.rpm
+# rpm -qi stunnel
+yum install -y stunnel
 
 useradd -d /var/stunnel -m -s /bin/false stunnel
 ls -ld /var/stunnel
@@ -115,8 +116,7 @@ renegotiation = no
 ciphers = ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES256-SHA
 cert = /etc/stunnel/stunnel-server.crt
 key = /etc/stunnel/stunnel-server.key
-CAfile = /etc/stunnel/clients.crt
-verifyPeer = yes' > /etc/stunnel/stunnel.conf
+CAfile = /etc/stunnel/clients.crt' > /etc/stunnel/stunnel.conf
 cd /etc/stunnel
 echo "> Generating stunnel keys"
 openssl req -newkey rsa:2048 -nodes -keyout stunnel-server.key -x509 -days 3650 -subj "/CN=stunnel-server" -out stunnel-server.crt
@@ -126,6 +126,32 @@ openssl pkcs12 -export -in $1-mobile.crt -inkey $1-mobile.key -out $1-mobile.p12
 
 cat $1-desktop.crt > clients.crt
 cat $1-mobile.crt >> clients.crt
+echo "> Creating stunnel service"
+setenforce 0
+echo "[Unit]
+Description=SSL tunnel for network daemons
+After=network.target
+After=syslog.target
+
+[Install]
+WantedBy=multi-user.target
+Alias=stunnel.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/stunnel /etc/stunnel/stunnel.conf
+ExecStop=/usr/bin/pkill stunnel
+
+# Give up if ping don't get an answer
+TimeoutSec=600
+
+Restart=always
+PrivateTmp=false" > /home/$1/temp
+
+cp /home/$1/temp /lib/systemd/system/stunnel.service
+rm -f /home/$1/temp
+
+
 echo "> Starting stunnel"
 systemctl start stunnel
 if $(/usr/bin/systemctl -q is-active stunnel) ; then 
@@ -135,4 +161,6 @@ else
 	exit
 fi
 systemctl enable stunnel
-cp -p $1-* stunnel-server.crt /home/$1/certs/
+sudo cp -p $1-* stunnel-server.crt /home/$1/certs/
+cd /home/$1/certs
+sudo chmod +r *
