@@ -99,7 +99,7 @@ VPS provider via their interface that your key is whatever was created in the `f
 
 **Important** rename your file to `master_id.rsa` and store it in the directory you have set to `keypath`.
 
-# Run the script
+## Run the script
 To run the script, use `./initial.sh {hostname}`. In my case it will be `./initial.sh ddvirtres`.
 
 First thing that will happen is you will be asked to add the server as trusted. Type out `yes`.
@@ -114,7 +114,7 @@ Usual methods include
 * Oldschool SHIFT+Ins
 * Esoteric Right Mouse Button click.
 
-# New prompts
+## New prompts
 After a while of inputting your server password, you will be asked to generate new ones.
 ![second prompts](readme_images/keys.png)
 
@@ -125,7 +125,7 @@ Next, it asks you for a `passphrase`. This adds another layer of protection for 
 
 You can leave this blank if you're not ready to face some more password enterings.
 
-# While it runs
+## While it runs
 You need two pieces of software to get this to work.
 * https://www.stunnel.org/downloads.html -- stunnel
 * https://openvpn.net/community-downloads/ -- openvpn
@@ -135,10 +135,10 @@ Download them. If you want to also add your android to the mix, you have the fol
 * https://play.google.com/store/apps/details?id=de.blinkt.openvpn&hl=en&gl=US -- openvpn. 
   **Important** do not confuse this with `OpenVPN Connect`. Those are different.
 
-# All went well
+## All went well
 If there are no problems, there will be two new folders in your `keypath`.
 
-## OpenVPN
+### OpenVPN
 
 ![folder_done_ovpn](readme_images/folder_done.png)
 First one is the openvpn folder. You also will have the `*.ovpn` file.
@@ -149,13 +149,13 @@ Usually it is something along the lines of `C:\Users\(user)\OpenVPN\config\openv
 
 **note**: `.conf` and `.ovpn` files are absolutely identical. If you need one or the other, just change the file extension.
 
-## stunnel
+### stunnel
 ![folder_done_stunnel](readme_images/folder_done_s.png)
 
 This folder also contains a lot of configs. You're interested in `stunnel.conf` and `(username)-desktop.crt` 
 but there's no harm in just copying everything into `/your/stunnel/dir/stunnel/config/`.
 
-# Running it
+## Running it
 1) Open stunnel.
 If configuration is okay, you shall see the coveted `configuration succesfull`
    
