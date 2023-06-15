@@ -1,0 +1,11 @@
+[openvpn]
+client = yes
+accept = 127.0.0.1:1194
+connect = SED_HOST:443
+
+verifyPeer = yes
+
+CAfile = stunnel-server.crt
+
+cert = SED_USERNAME-desktop.crt
+key = SED_USERNAME-desktop.key

@@ -1,2 +1,5 @@
 client/
 .idea/
+build
+dist
+output/
